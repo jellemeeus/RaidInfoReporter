@@ -1,0 +1,5 @@
+## Interface: 30300
+## Title: Raid Info Reporter 
+## Notes: Reports saved instances and lockouts  
+## Author: Nztufsz
+RIR.lua
