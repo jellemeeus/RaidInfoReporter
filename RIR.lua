@@ -1,6 +1,6 @@
 local RIR = CreateFrame("Frame")
 local InstanceShortNamesDungeons = {["Utgarde Keep"] = "UK", ["The Nexus"] = "Nexus", ["Azjol-Nerub"] = "AN", ["Ahn'kahet: The Old Kingdom"] = "AK:TOK", ["Drak'Tharon Keep"] = "DTK", ["The Violet Hold"] = "VH", ["Gundrak"] = "GD", ["Halls of Stone"] = "HoS", ["Halls of Lightning"] = "HoL", ["Utgarde Pinnacle"] = "UP", ["The Oculus"] = "Oculus", ["Crusaders' Coliseum: Trial of the Champion"] = "TOC", ["The Culling of Stratholme"] = "CoS", ["Pit of Saron"] = "PoS", ["The Forge of Souls"] = "FoS", ["Halls of Reflection"] = "HoS"}
-local InstanceShortNamesRaids = {["Icecrown Citadel"] = "ICC", ["Vault of Archavon"] = "VOA", ["Trial of the Crusader"] = "TOC", ["Naxxramas"] = "NAXX", ["The Ruby Sanctum"] = "RS", ["The Obsidian Sanctum"] = "OS", ["The Eye of Eternity"] = "EoE"}
+local InstanceShortNamesRaids = {["Icecrown Citadel"] = "ICC", ["Vault of Archavon"] = "VOA", ["Trial of the Crusader"] = "TOC", ["Naxxramas"] = "NAXX", ["The Ruby Sanctum"] = "RS", ["The Obsidian Sanctum"] = "OS", ["The Eye of Eternity"] = "EoE", ["Ulduar"] = "Ulduar"}
 local RaidDifficulty = {[1] = "10",[2] = "25",[3] = "10h",[4] = "25h"}
 
 local function ReportLocks(cmd, args, Player)
