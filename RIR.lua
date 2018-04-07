@@ -4,24 +4,26 @@ local InstanceShortNamesRaids = {["Icecrown Citadel"] = "ICC", ["Vault of Archav
 local RaidDifficulty = {[1] = "10",[2] = "25",[3] = "10h",[4] = "25h"}
 
 local function ReportLocks(cmd, args, Player)
-  local Locks = {}
+  local Locks = {} 
   local isReportRaid
   local isReportHC
+  local args1, args2
   Player = player or UnitName("player")
-
-  if cmd == "hc" then
-    isReportRaid = false
+  if args ~= nil and cmd == "hc" then
     isReportHC = true
-  elseif cmd == "raid" then
+    isReportRaid = false
+  elseif args ~= nil and cmd == "raid" then
     isReportHC = false  
     isReportRaid = true  
-  elseif cmd == "any" then
-    isReportRaid = true
+  elseif args ~= nil and cmd == "any" then
     isReportHC = true
+    isReportRaid = true    
   else 
-    print("usage: /rir [hc, raid, any] [guild, party, raid, test]")
-    do return end  
+    print("usage: /rir [hc, raid, any] [guild, party, raid, w/test] [name]") 
+    do return end      
   end
+
+  _, _, args1, args2 = string.find(args, "%s?(%w+)%s?(.*)")
 
   for i=1,GetNumSavedInstances() do
     local name, id, reset, difficulty, locked, extended, instanceIDMostSig, isRaid, maxPlayers, difficultyName, numEncounters, encounterProgress = GetSavedInstanceInfo(i)
@@ -32,29 +34,37 @@ local function ReportLocks(cmd, args, Player)
     end    
   end
 
-  if args == "guild" then
+  if args1 == "guild" then
     if #Locks > 0 then
       SendChatMessage(string.format("Locks for " .. cmd .. " : %s",table.concat(Locks,", ")),"GUILD")
     else
       SendChatMessage("No locks for " .. cmd, "GUILD", "Common")
     end  
-  elseif args == "party" then
+  elseif args1 == "party" then
     if #Locks > 0 then
       SendChatMessage(string.format("Locks for " .. cmd .. " : %s",table.concat(Locks,", ")),"PARTY")
     else
       SendChatMessage("No locks for " .. cmd, "PARTY", "Common")
     end 
- elseif args == "raid" then
+ elseif args1 == "raid" then
     if #Locks > 0 then
       SendChatMessage(string.format("Locks for " .. cmd .. " : %s",table.concat(Locks,", ")),"RAID")
     else
       SendChatMessage("No locks for " .. cmd, "RAID", "Common")
     end 
-  elseif args == "w" or args == "test" then
-    if #Locks > 0 then
+  elseif args1 == "w" or args1 == "test" then
+    if args2 == nil or args2 == '' then
+      if #Locks > 0 then
         SendChatMessage(string.format("Locks for " .. cmd .. " : %s",table.concat(Locks,", ")), "WHISPER", nil, Player)
-    else
+      else
         SendChatMessage("No locks for " .. cmd, "WHISPER", "Common", UPlayer)
+      end
+    else
+      if #Locks > 0 then
+          SendChatMessage(string.format("Locks for " .. cmd .. " : %s",table.concat(Locks,", ")), "WHISPER", nil, args2)
+      else
+          SendChatMessage("No locks for " .. cmd, "WHISPER", "Common", args2)
+      end
     end
   else
     print("usage: /rir [hc, raid, any] [guild, party, test]")
@@ -64,9 +74,9 @@ end
 
 RIR:RegisterEvent("CHAT_MSG_WHISPER")
 RIR:SetScript("OnEvent", 
-  function(self, event, Message, Player)
-    if event == "CHAT_MSG_WHISPER" then
-      Message = strlower(Message)
+function(self, event, Message, Player)
+  if event == "CHAT_MSG_WHISPER" then
+    Message = strlower(Message)
     if Message == "raidlocks" or Message == "raid locks" then
       ReportLocks("raid", "w", Player)
     elseif Message == "hclocks" or Message == "hc locks" then
